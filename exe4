@@ -1,0 +1,84 @@
+#include <stdio.h>
+
+#define DIAS     7
+#define PERIODOS 3
+
+void lerMatriz(float m[][PERIODOS], int dias);
+float mediaDiaria(float m[][PERIODOS], int dia);
+float maiorDaSemana(float m[][PERIODOS], int dias);
+int diaQuente(float m[][PERIODOS], int dias);
+void exibirTabela(float m[][PERIODOS], int dias);
+
+const char* nomeDias[] = {"Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"};
+
+int main() {
+    float mTemperaturas[DIAS][PERIODOS];
+    
+    printf("\n EX 4: Matriz de Temperaturas \n");
+    lerMatriz(mTemperaturas, DIAS);
+    
+    exibirTabela(mTemperaturas, DIAS);
+    
+    printf("\n Médias Diárias \n");
+    for(int i = 0; i < DIAS; i++) {
+        printf("%s: %.2f°C\n", nomeDias[i], mediaDiaria(mTemperaturas, i));
+    }
+    
+    printf("\nMaior temperatura registrada na semana: %.2f°C\n", maiorDaSemana(mTemperaturas, DIAS));
+    
+    int indiceDiaQuente = diaQuente(mTemperaturas, DIAS);
+    printf("O dia mais quente da semana (pela média) foi: %s\n", nomeDias[indiceDiaQuente]);
+    
+    return 0;
+}
+
+void lerMatriz(float m[][PERIODOS], int dias) {
+    for(int i = 0; i < dias; i++) {
+        printf("--- %s ---\n", nomeDias[i]);
+        printf("  Manhã: "); scanf("%f", &m[i][0]);
+        printf("  Tarde: "); scanf("%f", &m[i][1]);
+        printf("  Noite: "); scanf("%f", &m[i][2]);
+    }
+}
+
+float mediaDiaria(float m[][PERIODOS], int dia) {
+    float soma = 0;
+    for(int j = 0; j < PERIODOS; j++) {
+        soma += m[dia][j];
+    }
+    return soma / PERIODOS;
+}
+
+float maiorDaSemana(float m[][PERIODOS], int dias) {
+    float maior = m[0][0];
+    for(int i = 0; i < dias; i++) {
+        for(int j = 0; j < PERIODOS; j++) {
+            if(m[i][j] > maior) {
+                maior = m[i][j];
+            }
+        }
+    }
+    return maior;
+}
+
+int diaQuente(float m[][PERIODOS], int dias) {
+    int melhorIndice = 0;
+    float maiorMedia = mediaDiaria(m, 0);
+    
+    for(int i = 1; i < dias; i++) {
+        float mediaAtual = mediaDiaria(m, i);
+        if(mediaAtual > maiorMedia) {
+            maiorMedia = mediaAtual;
+            melhorIndice = i;
+        }
+    }
+    return melhorIndice;
+}
+
+void exibirTabela(float m[][PERIODOS], int dias) {
+    printf("\n%-10s | %-7s | %-7s | %-7s\n", "Dia", "Manhã", "Tarde", "Noite");
+    printf("------------------------------------------\n");
+    for(int i = 0; i < dias; i++) {
+        printf("%-10s | %-7.1f | %-7.1f | %-7.1f\n", nomeDias[i], m[i][0], m[i][1], m[i][2]);
+    }
+}
