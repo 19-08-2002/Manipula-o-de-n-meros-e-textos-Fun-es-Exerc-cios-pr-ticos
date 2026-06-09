@@ -1,0 +1,77 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+void lerNomes(char nomes[][50], int n);
+void paraMaiusculas(char s[]);
+void ordenarNomes(char nomes[][50], int n);
+int buscarNome(char nomes[][50], int n, char alvo[]);
+
+int main() {
+    char nomes[50][50];
+    char nomeAlvo[50];
+    
+    printf("\n EX 3: Manipulação de Strings \n");
+    lerNomes(nomes, 5);
+    
+     for(int i = 0; i < 5; i++) {
+        paraMaiusculas(nomes[i]);
+    }
+    
+    ordenarNomes(nomes, 5);
+    
+    printf("\nNomes ordenados e em maiúsculas:\n");
+    for(int i = 0; i < 5; i++) {
+        printf("%d: %s\n", i + 1, nomes[i]);
+    }
+    
+    printf("\nDigite um nome para buscar: ");
+    scanf(" %[^\n]", nomeAlvo);
+    paraMaiusculas(nomeAlvo);
+    
+    int pos = buscarNome(nomes, 5, nomeAlvo);
+    if(pos != -1) {
+        printf("Nome encontrado na posição de ordenação: %d\n", pos + 1);
+    } else {
+        printf("Nome não encontrado na lista.\n");
+    }
+    
+    return 0;
+}
+
+void lerNomes(char nomes[][50], int n) {
+    for(int i = 0; i < n; i++) {
+        printf("Digite o %dº nome: ", i + 1);
+        scanf(" %[^\n]", nomes[i]); 
+    }
+}
+
+void paraMaiusculas(char s[]) {
+    for(int i = 0; s[i] != '\0'; i++) {
+        s[i] = toupper((unsigned char)s[i]);
+    }
+}
+
+void ordenarNomes(char nomes[][50], int n) {
+    char temp[50];
+  
+    for(int i = 0; i < n - 1; i++) {
+        for(int j = 0; j < n - i - 1; j++) {
+            if(strcmp(nomes[j], nomes[j + 1]) > 0) {
+                strcpy(temp, nomes[j]);
+                strcpy(nomes[j], nomes[j + 1]);
+                strcpy(nomes[j + 1], temp);
+            }
+        }
+    }
+}
+
+int buscarNome(char nomes[][50], int n, char alvo[]) {
+    for(int i = 0; i < n; i++) {
+        if(strcmp(nomes[i], alvo) == 0) {
+            return i;
+        }
+    }
+    return -1;
+}
+
